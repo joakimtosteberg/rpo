@@ -162,7 +162,9 @@ for i in range(0, len(sorted_results)):
     results += f"{place:2}: {sorted_results[i].get_name():7} {sorted_results[i].get_foxes()!s:7} {sorted_results[i].get_time()}\n"
     html_results += f"<tr><td>{place}.</td><td>{sorted_results[i].get_name()}</td><td>{sorted_results[i].get_foxes()}</td><td>{sorted_results[i].get_time()}</td></tr>\n"
     html_results_detail += f"<tr><td>{place}.</td><td>{sorted_results[i].get_name()}</td><td>{sorted_results[i].get_foxes()}</td><td>{sorted_results[i].get_time()}</td></tr>\n"
-    for runners in sorted_results[i].competitions.values():
+    for competition, runners in sorted_results[i].competitions.items():
+        competition_name = "Natt" if competition == 0 else "Dag"
+        html_results_detail += f'<tr><td></td><td style="text-align: center;" colspan="2">{competition_name}</td><td></td></tr>'
         for i,runner in enumerate(runners):
             extra_formatting = ""
             if runner.is_included():
