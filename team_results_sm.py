@@ -4,10 +4,17 @@ import functools
 from pathlib import Path
 
 class TeamResult:
-    def __init__(self, foxes, time):
+    def __init__(self, foxes, time, nam1, fnam1, nam2, fnam2, nam3, fnam3):
         self.foxes = int(foxes)
         time = time.split("'")
         self.time = int(time[0])*60 + int(time[1])
+        self.runners = set()
+        if nam1 or fnam1:
+            self.runners.add(f"{fnam1} {nam1}")
+        if nam2 or fnam2:
+            self.runners.add(f"{fnam2} {nam2}")
+        if nam3 or fnam3:
+            self.runners.add(f"{fnam3} {nam3}")
 
 @functools.total_ordering
 class TeamResults:
@@ -16,8 +23,14 @@ class TeamResults:
         self.competitions = list()
         self.total_foxes = 0
         self.total_time = 0
+        self.runners = set()
 
     def add_result(self, competition, result):
+        if not self.runners:
+            self.runners = result.runners
+        elif self.runners != result.runners:
+            print(f"WARNING: runner mismatch for {self.team_name} at competition {competition}. Got {result.runners} but expected {self.runners}")
+
         if competition in self.competitions:
             return
         
@@ -51,6 +64,7 @@ team_results = dict()
 parser = argparse.ArgumentParser()
 
 parser.add_argument('team_results_csv', type=Path, nargs=2)
+parser.add_argument('--output', '-o', type=Path)
 args = parser.parse_args()
 
 for competition in range(0,len(args.team_results_csv)):
@@ -61,14 +75,18 @@ for competition in range(0,len(args.team_results_csv)):
             if team_name not in team_results:
                 team_results[team_name] = TeamResults(team_name)
 
-            team_results[team_name].add_result(competition, TeamResult(row['totFo'], row['totRun']))
+            team_results[team_name].add_result(competition, TeamResult(row['totFo'], row['totRun'], row['Nam1'], row['Fnam1'], row['Nam2'], row['Fnam2'], row['Nam3'], row['Fnam3']))
 
 sorted_results = sorted(team_results.values())
 
 place = 1
-print(f"    Team    Foxes   Time")
+results = f"    Team    Foxes   Time\n"
 for i in range(0, len(sorted_results)):
     if i>0 and (sorted_results[i] != sorted_results[i-1]):
         place = i+1
-    print(f"{place:2}: {sorted_results[i].get_name():7} {sorted_results[i].get_foxes()!s:7} {sorted_results[i].get_time()}")
+    results += f"{place:2}: {sorted_results[i].get_name():7} {sorted_results[i].get_foxes()!s:7} {sorted_results[i].get_time()}\n"
 
+if args.output:
+    args.output.write_text(results)
+else:
+    print(results, end='')
