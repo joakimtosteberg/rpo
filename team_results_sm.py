@@ -164,14 +164,15 @@ for i in range(0, len(sorted_results)):
     html_results_detail += f"<tr><td>{place}.</td><td>{sorted_results[i].get_name()}</td><td>{sorted_results[i].get_foxes()}</td><td>{sorted_results[i].get_time()}</td></tr>\n"
     for competition, runners in sorted_results[i].competitions.items():
         competition_name = "Natt" if competition == 0 else "Dag"
-        html_results_detail += f'<tr><td></td><td style="text-align: center;" colspan="2">{competition_name}</td><td></td></tr>'
+        html_results_detail += f'<tr><td></td><td style="text-align: center;" colspan="2">{competition_name}</td><td></td></tr>\n'
         for i,runner in enumerate(runners):
             extra_formatting = ""
             if runner.is_included():
                 extra_formatting += "font-weight:bold;"
-            html_results_detail += f'<tr style="{extra_formatting}"><td></td><td>{runner.get_name()}</td><td>{runner.get_foxes()}</td><td>{runner.get_time()}</td></td>'
-html_results += "</table>"
-html_results_detail += "</table>"
+            html_results_detail += f'<tr style="{extra_formatting}"><td></td><td>{runner.get_name()}</td><td>{runner.get_foxes()}</td><td>{runner.get_time()}</td></tr>\n'
+
+html_results += "</table>\n"
+html_results_detail += "</table>\n"
 
 print(results, end='')
 
