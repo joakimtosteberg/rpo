@@ -2,6 +2,7 @@ import argparse
 import csv
 import datetime
 from pathlib import Path
+import shutil
 import sys
 
 parser = argparse.ArgumentParser()
@@ -45,6 +46,7 @@ for start_no, start_time in start_times.items():
     print(f"Start time for runner {start_no} will be set to {start_time}")
 
 if args.kor and start_times:
+    shutil.copyfile(args.kor, args.kor.with_suffix(f"{args.kor.suffix}.{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.bak"))
     with open(args.kor, "a") as f:
         f.write(f"\n@SAVE: {datetime.datetime.now().strftime('%H:%M:%S %d-%m-%y')} VER1908\n")
         f.write("@BEGIN-KOR\n")
