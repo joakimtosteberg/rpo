@@ -57,7 +57,7 @@ html_results = "<table><tr><td></td><td>Name</td><td>Foxes</td><td>Time</td></tr
 results = "    Name                           Foxes   Time\n"
 for result in sorted_results:
     results += f"{place:2}: {result['name']:30} {result['foxes']!s:7} {format_time(result['runtime_hcp'])}\n"
-    html_results += f"<tr><td>{place}.</td><td>{result['name']}</td><td>{format_time(result['runtime_hcp'])} ({format_time(result['runtime'])})</td></tr>\n"
+    html_results += f"<tr><td>{place}.</td><td>{result['name']}</td><td>{result['foxes']}</td><td>{format_time(result['runtime_hcp'])} ({format_time(result['runtime'])})</td></tr>\n"
 
     if result['runtime_hcp'] > last_time:
         place += 1
