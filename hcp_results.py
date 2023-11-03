@@ -19,7 +19,8 @@ def get_hcp(runner):
         return 0
     age = int(date.today().strftime("%Y")) - runner['birth']
     hcp = 0 if age < 50 else int((age - 50) / 2)
-    if 'Modig' in runner['name']:
+    if runner['category'] and runner['category'][0] in ['W', 'D']:
+        print(runner)
         hcp += 5
     return hcp * 60
 
@@ -32,7 +33,9 @@ def parse_results(results_file):
             runtime = parse_time(row['Runt']) if row['Runt'] else None
             foxes = int(row['Fo']) if row['Fo'] else 0
             birth = int(row['Birth']) if row['Birth'] else None
+            category = row['Cat']
             results.append({'name': name,
+                            'category': category,
                             'runtime': runtime,
                             'foxes': foxes,
                             'birth': birth})
