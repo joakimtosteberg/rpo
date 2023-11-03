@@ -26,8 +26,6 @@ def get_hcp(runner):
         hcp += 5
     return hcp * 60
 
-results = {}
-
 for team_name, legs in teams.items():
     results[team_name] = {
         'time': 0,
