@@ -16,7 +16,7 @@ def parse_results(results_file):
             finish = row['Finish']
             start = row['Start']
             runtime = parse_time(row['Runt']) if row['Runt'] else None
-            foxes = int(row['Fo'])
+            foxes = int(row['Fo']) if row['Fo'] else 0
             birth = int(row['Birth']) if row['Birth'] else None
             leg = int(row['Grp']) if row['Grp'] != '' else -1
             if leg == -1:

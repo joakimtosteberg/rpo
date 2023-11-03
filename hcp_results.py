@@ -30,7 +30,7 @@ def parse_results(results_file):
         for row in reader:
             name = f"{row['Fnam']} {row['Nam']}"
             runtime = parse_time(row['Runt']) if row['Runt'] else None
-            foxes = int(row['Fo'])
+            foxes = int(row['Fo']) if row['Fo'] else 0
             birth = int(row['Birth']) if row['Birth'] else None
             results.append({'name': name,
                             'runtime': runtime,
