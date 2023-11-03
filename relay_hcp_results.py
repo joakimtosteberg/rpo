@@ -51,6 +51,7 @@ for team_name, legs in teams.items():
 sorted_results = sorted(results.items(), key=lambda item:item[1]['time'])
 last_time = 0
 place = 1
+place_extras = 0
 html_results = "<table><tr><td></td><td>Team</td><td>Time</td></tr>\n"
 results = f"    Team    Time\n"
 for team,result in sorted_results:
@@ -60,9 +61,13 @@ for team,result in sorted_results:
         runner = result['legs'][leg]
         html_results += f"<tr><td></td><td>{runner['name']}</td><td>{format_time(runner['runtime_hcp'])} ({format_time(runner['runtime'])})</td></tr>\n"
 
-    if result['time'] > last_time:
+    if result['time'] != last_time:
         place += 1
         last_time = result['time']
+        place += place_extras
+        place_extras = 0
+    else:
+        place_extras += 1
 
 
 html_results += "</table>\n"

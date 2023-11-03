@@ -53,15 +53,20 @@ for result in results:
 sorted_results = sorted(sorted(results, key=itemgetter('runtime_hcp')), key=itemgetter('foxes'), reverse=True)
 last_time = 0
 place = 1
+place_extras = 0
 html_results = "<table><tr><td></td><td>Name</td><td>Foxes</td><td>Time</td></tr>\n"
 results = "    Name                           Foxes   Time\n"
 for result in sorted_results:
     results += f"{place:2}: {result['name']:30} {result['foxes']!s:7} {format_time(result['runtime_hcp'])}\n"
     html_results += f"<tr><td>{place}.</td><td>{result['name']}</td><td>{result['foxes']}</td><td>{format_time(result['runtime_hcp'])} ({format_time(result['runtime'])})</td></tr>\n"
 
-    if result['runtime_hcp'] > last_time:
+    if result['runtime_hcp'] != last_time:
         place += 1
         last_time = result['runtime_hcp']
+        place += place_extras
+        place_extras = 0
+    else:
+        place_extras += 1
 
 
 html_results += "</table>\n"
